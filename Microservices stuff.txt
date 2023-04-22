@@ -1,0 +1,39 @@
+
+class Theatre{
+  int id;
+  name;
+  location
+  list<movies> movies;
+}
+
+class Movie{
+   id;
+  name;
+  actors
+  List<screen> screens;
+}
+
+class screen{
+}
+
+class User{
+   int id;
+   name,
+   gmail
+  mobile
+
+    SearchByLocation();
+   searchbyPrice();
+   searchByMovie
+}
+
+=========================================================================================================
+Monolithic Architecture has single code base and different modules and single data base
+Microservice architecture consists of interconnected services . Each Microservice is self contained and implements specific business capablity. Each service posses Presntation layer , business layer , data layer. Consists multiple databases
+if some traffic is there for a particular micro service then we can increase the instance of particular micro service
+
+
+Benfits of Adopting Micro service :
+Scalablity
+flexiblity
+improved productivity and speed

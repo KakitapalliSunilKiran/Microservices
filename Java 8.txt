@@ -1,0 +1,627 @@
+if we want to process objects from the collection then we should go for streams
+
+IO streams are different they speak about data
+
+if we want to represent group of objects then we should go for collection
+
+Stream s=c.stream();
+
+Stream is present in Java.util.Stream Package
+
+Filter Example ::
+=======================================================================================
+import java.util.*;
+import java.util.stream.*;
+public class Main
+{
+	public static void main(String[] args) {
+	    
+		System.out.println("Hello World");
+		ArrayList<Integer> al=new ArrayList<>();
+		al.add(10);
+		al.add(20);
+		al.add(33);
+		al.add(47);
+		System.out.println(al);
+		List<Integer> al2=al.stream().filter(i->i%2==0).collect(Collectors.toList());
+		System.out.println(al2);
+		
+	}
+}
+================================================================================================
+Map Example ::
+
+import java.util.*;
+import java.util.stream.*;
+public class Main
+{
+	public static void main(String[] args) {
+	    
+		System.out.println("Hello World");
+		ArrayList<Integer> al=new ArrayList<>();
+		al.add(10);
+		al.add(20);
+		al.add(33);
+		al.add(47);
+		System.out.println(al);
+		List<Integer> al2=al.stream().map(i->i+10).collect(Collectors.toList());
+		System.out.println(al2);
+		
+	}
+}
+==================================================================================================
+ int[] integers = new int[] { 20, 98, 12, 7, 35 };
+    
+    int min = Arrays.stream(integers)
+      .min()
+      .getAsInt();
+======================================================================================================
+in interface the method by default is public abstrct
+stream() is a part of List interafce
+
+
+blog about default methods ::
+https://www.educative.io/courses/java-8-lambdas-stream-api-beyond/R888OpmM5WO?aid=5082902844932096&utm_source=google&utm_medium=paid&utm_campaign=DSA_india&utm_content=search-dynamic&utm_term=&utm_campaign=Dynamic+Search+ads+-+India+-+NEW&utm_source=adwords&utm_medium=ppc&hsa_acc=5451446008&hsa_cam=11957940667&hsa_grp=113685778257&hsa_ad=582536295770&hsa_src=g&hsa_tgt=aud-524098480308:dsa-904715088424&hsa_kw=&hsa_mt=&hsa_net=adwords&hsa_ver=3&gclid=Cj0KCQjwuO6WBhDLARIsAIdeyDJPHcuW5-vWHGSoGxC-Gg6ywcj_Xpmo-KRab9_AKmDth9FxeP6BtbUaAjIhEALw_wcB
+============================================================================================================================
+Consumer Functional Interface
+import java.util.*;
+import java.util.stream.*;
+import java.util.function.Consumer;
+
+public class Main
+{
+	public static void main(String[] args) {
+		List<Integer> al=Arrays.asList(10,20,30,40,55,57);
+ 		Consumer<Integer> c=i->System.out.println(i);
+		al.forEach(c);
+		
+	}
+}
+===============================================================================================
+Consumer Functional Interface with Lamda Expression
+import java.util.*;
+import java.util.stream.*;
+import java.util.function.Consumer;
+
+public class Main
+{
+	public static void main(String[] args) {
+		List<Integer> al=Arrays.asList(10,20,30,40,55,57);
+		Consumer<Integer> c=new Consumer<Integer>(){
+		    public void accept(Integer i){
+		        System.out.println(i);
+		    }
+		};
+		al.forEach(c);
+		
+	}
+}
+==================================================================================================
+import java.util.*;
+import java.util.stream.*;
+import java.util.function.Consumer;
+
+public class Main
+{
+	public static void main(String[] args) {
+		List<Integer> al=Arrays.asList(10,20,30,40,55,57);
+
+		al.forEach(new Consumer<Integer>(){
+		     public void accept(Integer i){
+		        System.out.println(i);
+		    }
+		});
+		
+	}
+}
+=================================================================================================
+Stream dont preserve the data
+if we try to iterate again it will throw Exception
+Stream() method present in collection interface and its default
+Map returns a stream again
+============================================================================================
+import java.util.*;
+import java.util.stream.*;
+import java.util.function.*;
+
+public class Main
+{
+	public static void main(String[] args) {
+		List<Integer> al=Arrays.asList(10,20,30,40,55,57);
+		al.forEach(i->System.out.println(i));
+		
+		Function<Integer,Integer> f=new Function<>(){
+		    public Integer apply(Integer i){
+		        return i*i;
+		    }
+		};
+		
+		BinaryOperator<Integer> b=new BinaryOperator<Integer>(){
+		    public Integer apply(Integer i1,Integer i2){
+		        return i1+i2;
+		    }
+		};
+		Stream s=al.stream();
+		Stream s1=s.map(f);
+		Integer x=(Integer)s1.reduce(0,b);
+		System.out.println(x);
+		//System.out.println(s1.forEach(i->System.out.println(i)));
+	}
+}
+=====================================================================================================
+
+
+Functional Interface can hold the reference of Lambda Expression
+
+No .Class file for Lambda Expression
+
+
+
+====================================================================================================
+By Using Lambda Expression
+class Test
+{
+        public static void main(String args[]){
+                  Runnable r=()->{
+                                for(int i=0;i<10;i++){
+                                     System.out.println("I am in Run Method");
+	           }
+	};
+
+	Thread t=new Thread(r);
+                    t.start();
+
+
+	 for(int i=0;i<10;i++){
+                                     System.out.println("I am in Main Method");
+	   }
+        }
+
+}
+=================================================================================================
+By using Anonymous inner class 
+class Test
+{
+        public static void main(String args[]){
+                  Runnable r=new Runnable(){
+                            public void run(){
+                               for(int i=0;i<10;i++){
+                                     System.out.println("I am in Run Method");
+	           }
+                        }
+	};
+
+	Thread t=new Thread(r);
+                    t.start();
+
+
+	 for(int i=0;i<10;i++){
+                                     System.out.println("I am in Main Method");
+	   }
+        }
+
+}
+===================================================================================================
+
+class MyComparator implements Comparator<Integer>
+{
+         public int comare(Integer I1,Integer I2){
+                    if(I1<I2)
+                         return -1;
+                    else if(I1>I2)
+                         return +1;
+                    else
+                        return 0;
+         }
+}
+
+class Main
+{
+        public static void main(String args[])
+        {
+                    ArrayList<Integer> al=new ArrayList<Integer>();
+                	al.add(0);
+               	al.add(10);
+               	al.add(20);
+               	al.add(-10);
+              	 al.add(-10);
+	 al.add(30);
+	 al.add(15);
+                     System.out.println(al);
+                  	Collections.sort(al,new MyComparator());
+                    System.out.println(al);
+           }
+}
+====================================================================================================
+import java.util.*;
+class Main
+{
+        public static void main(String args[])
+        {
+               ArrayList<Integer> al=new ArrayList<Integer>();
+                	al.add(0);
+               	al.add(10);
+               	al.add(20);
+               	al.add(-10);
+              	 al.add(-10);
+	 al.add(30);
+	 al.add(15);
+                     System.out.println(al);
+                    Comparator<Integer> c=(I1,I2)->(I1<I2)?-1:(I1>I2)?1:0;
+                  	Collections.sort(al,c);
+                    System.out.println(al);
+           }
+}
+========================================================================================================
+class MyComparatorNumber extends Comparator<Employee>
+{
+           public int compare(Employee o1,Employeee o2)
+           {
+                    if(i1.no<i2.no)
+                       return -1;
+                    else if(i1.no>i2.no)
+                       return +1;
+                    else
+                       return 0;
+           }
+}
+=======================================================================================================
+class MyComparatorName extends Comparator<Employee>
+{
+           public int compare(Employee o1,Employeee o2)
+           {
+                  return o1.name.comapareTo(o2.name);
+           }
+}
+========================================================================================================
+class Test{
+       public static void main(String args[])
+        {
+               	ArrayList<Employee> al=new ArrayList<Employee>();
+                	al.add(new Employee(10,"Sunil"));
+               	al.add(new Employee(10,"Sunil"));
+               	al.add(new Employee(10,"Sunil"));
+               	al.add(new Employee(10,"Sunil"));
+              	 
+                     System.out.println(al);
+                    Comparator<Employee> c=(I1,I2)->(I1.no<I2.no)?-1:(I1.no>I2.no):1:0;
+                  	Collections.sort(al,c);
+                  	Comparator<Employee> c=(I1,I2)->I1.name.compareTo(I2.name);
+                  	Collections.sort(al,c);
+                    System.out.println(al);
+           }
+}
+============================================================================================================
+Anonymous Inner Class ::
+
+Comparator<Employee> c=new Comparator<Employee>(){
+        
+         public int compare (Employee o1, Employee o2)
+        {
+            if (o1.no < o2.no)
+                return -1;
+            else if (o1.no > o2.no)
+                return +1;
+            else
+                return 0;
+        }
+    };
+    //Comparator c=(I1,I2)->(I1.no<I2.no)?-1:(I1.no>I2.no):1:0;
+    Collections.sort (al, c);
+    //    Comparator c=(I1,I2)->I1.name.compareTo(I2.name);
+    //    Collections.sort(al,c);
+    System.out.println (al);
+  }
+============================================================================================================
+Anonymous Inner class :
+ Class which dont have syntax is called Anonymous Inner class
+
+Thread t=new Thread()
+{
+       
+};
+Anonymous inner class extends Thread Class . 
+
+Anonymous inner class is more powerful than Lambda Expression because Lambda expression is only for SAM FI , but if we have interface with more than 1 method
+Then we cant  use Lambda Exp
+
+Object class methods we cant make default in any interface
+interfaceName.super.m1() -> to clear the ambuiguity issue
+
+if class have only static methods its better to go with interface from java 8:
+===================================================================================================================
+Runnable using Lambda Expression :
+          public static void main(String[] args) {
+		System.out.println("Hello World");
+		//MyRunnable obj=new MyRunnable();
+		Runnable r=()->{
+		    for(int i=0;i<10;i++){
+           			 System.out.println("I am in run Method1111111");
+          		      }
+		};
+		Thread t=new Thread(r);
+		t.start();
+		for(int i=0;i<10;i++){
+            		     System.out.println("I am in main Method");
+       		 }
+}
+=================================================================================================================
+Version 2 of Lambda Expression::
+public static void main(String[] args) {
+		System.out.println("Hello World");
+		//MyRunnable obj=new MyRunnable();
+		
+               Thread t=new Thread(()->{
+		  for(int i=0;i<10;i++){
+            		       System.out.println("I am in run Method3333333333333");
+         	                }
+	});
+	t.start();
+		for(int i=0;i<10;i++){
+            			System.out.println("I am in main Method");
+        		}
+}
+==============================================================================================================================
+Using Anonymous Inner class
+public static void main(String[] args) {
+		System.out.println("Hello World");
+		//MyRunnable obj=new MyRunnable();
+		Runnable r=new Runnable()
+		{
+		    public void run(){
+    		    for(int i=0;i<10;i++){
+                    		System.out.println("I am in run Method9999999999999999999");
+              		      }
+		    }
+		};
+		Thread t=new Thread(r);
+		t.start();
+		for(int i=0;i<10;i++){
+            		    System.out.println("I am in main Method");
+        		}
+}
+==============================================================================================================================
+Basic Version
+class MyRunnable implements Runnable
+{
+    public void run(){
+        for(int i=0;i<10;i++){
+            System.out.println("I am in run Method");
+        }
+    }
+}
+===========================================================================================================================
+Predefined Funtional Interfaces ::
+
+Predicate ,
+Function ,
+Consumer ,
+Supplier 
+
+these all available in java.util.function package
+
+Predicate functional interface contains only 1 method ie test
+
+public abstract boolean test(T t)
+{
+}
+=========================================================================================================================
+import java.util.function.Predicate;
+import java.util.ArrayList;
+class Employee
+{
+    int id;
+    String name;
+    Employee(int id,String name){
+        this.id=id;
+        this.name=name;
+    }
+}
+public class Main
+{
+	public static void main(String[] args) {
+		System.out.println("Hello World");
+		ArrayList<Employee> al=new ArrayList<>();
+		al.add(new Employee(100,"sunil1"));
+		al.add(new Employee(101,"sunil2"));
+		al.add(new Employee(102,"sunil3"));
+		al.add(new Employee(103,"sunil4"));
+		al.add(new Employee(104,"sunil5"));
+		
+		Predicate<Employee> p=e->e.id>102;
+		
+		for(Employee e:al){
+		    if(p.test(e)){
+		        System.out.println(e.id);
+		    }
+		}
+		
+	}
+}
+===============================================================================================================================
+
+***********Function FI*****************************
+Function is a predefined Functional Interface
+which contains apply method which has input and return type
+================================================================================================================================
+import java.util.function.Function;
+import java.util.ArrayList;
+class Employee
+{
+    int id;
+    String name;
+    Employee(int id,String name){
+        this.id=id;
+        this.name=name;
+    }
+}
+public class Main
+{
+	public static void main(String[] args) {
+	    
+	    
+	    System.out.println("Hello World");
+		ArrayList<Employee> al=new ArrayList<>();
+		al.add(new Employee(100,"sunil1"));
+		al.add(new Employee(101,"sunil2"));
+		al.add(new Employee(75,"sunil3"));
+		al.add(new Employee(35,"sunil4"));
+		al.add(new Employee(30,"sunil5"));
+		
+		Function<Employee,String> f=(e)->{
+		    
+		    if(e.id>90)
+		    return "A grade";
+		    else if(e.id>80)
+		    return "B grade";
+		    else if(e.id>70)
+		    return "C grade";
+		    else
+		    return "Failed";
+		    
+		};
+		
+		for(Employee e:al){
+		    System.out.println(e.id+" "+e.name+" "+f.apply(e));
+		}
+		
+		System.out.println("Hello World");
+	}
+}
+=============================================================================================================================
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.ArrayList;
+class Employee
+{
+    int id;
+    String name;
+    Employee(int id,String name){
+        this.id=id;
+        this.name=name;
+    }
+}
+public class Main
+{
+	public static void main(String[] args) {
+	    
+	    
+	    System.out.println("Hello World");
+		ArrayList<Employee> al=new ArrayList<>();
+		al.add(new Employee(100,"sunil1"));
+		al.add(new Employee(101,"sunil2"));
+		al.add(new Employee(75,"sunil3"));
+		al.add(new Employee(35,"sunil4"));
+		al.add(new Employee(30,"sunil5"));
+		
+		Predicate<Employee> p=(e)->e.id>=75;
+		
+		Function<Employee,String> f=(e)->{
+		    
+		    if(e.id>90)
+		    return "A grade";
+		    else if(e.id>80)
+		    return "B grade";
+		    else if(e.id>70)
+		    return "C grade";
+		    else
+		    return "Failed";
+		    
+		};
+		
+		for(Employee e:al){
+		    if(p.test(e))
+		    System.out.println(e.id+" "+e.name+" "+f.apply(e));
+		}
+		
+		System.out.println("Hello World");
+	}
+}
+=================================================================================================================================
+BY Using Consumer Interface
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Consumer;
+import java.util.ArrayList;
+class Employee
+{
+    int id;
+    String name;
+    Employee(int id,String name){
+        this.id=id;
+        this.name=name;
+    }
+}
+public class Main
+{
+	public static void main(String[] args) {
+	    
+	    
+	    System.out.println("Hello World");
+		ArrayList<Employee> al=new ArrayList<>();
+		al.add(new Employee(100,"sunil1"));
+		al.add(new Employee(101,"sunil2"));
+		al.add(new Employee(75,"sunil3"));
+		al.add(new Employee(35,"sunil4"));
+		al.add(new Employee(30,"sunil5"));
+		
+		Predicate<Employee> p=(e)->e.id>=75;
+		
+		Consumer<Employee> f=(e)->{
+		    
+		    if(e.id>90)
+		    System.out.println(e.id+ " A grade");
+		    else if(e.id>80)
+		    System.out.println(e.id+" B grade");
+		    else if(e.id>70)
+		    System.out.println(e.id+"  C grade");
+		    else
+		    System.out.println(e.id+" Failed");
+		    
+		};
+		
+		for(Employee e:al){
+		    if(p.test(e))
+		    f.accept(e);
+		}
+		
+		System.out.println("Hello World");
+	}
+}
+=====================================================================================================
+Predicate : Take some input and perform some conditional check and return some boolean value 
+chaining by using And , OR
+Function : Take some input perfrom some operation return some value(Need not be boolean)
+Chaning by using AndThen , Compose
+Consumer : Accept some input perform required operation and no need to return anything 
+chaing by using andThen
+====================================================================================================
+
+
+Supplier :: Just supply my required object and it wont take any input
+
+interface Supplier<R>
+{
+     public R get();
+}
+
+import java.util.Date;
+import java.util.function.Supplier;
+public class Main
+{
+	public static void main(String[] args) {
+	    Supplier<Date> s=()->new Date();
+		System.out.println(s.get());
+	}
+}
+========================================================================================================
+
+
+
+
+
+
+
+
+
+

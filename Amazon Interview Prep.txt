@@ -1,0 +1,704 @@
+//  Kth Larjest element
+// Priority Queue
+
+PriorityQueue<Integer> pQueue = new PriorityQueue<Integer>(Collections.reverseOrder());
+      
+	  // building max heap, ( sorted array from descending order)
+        for (int n : nums) {
+                pQueue.add(n);   
+              
+        }
+        
+        //taking elements kth time gives us result 
+        
+        for ( int i =1 ; i <=k ; i ++) {
+                result=  pQueue.poll();
+        }
+        
+        return result;
+
+===============================================================================
+//2 Sum 
+public int[] twoSum(int[] nums, int target) {
+	int[] nRet = new int[2];    // Creating a retrun var
+	   	if(nums.length > 1) {
+			Map<Integer, Integer> oMap = new HashMap<>();  //Create a hashmap to store complement
+			for(int i = 0; i < nums.length; i++ ){    //iterate over all the elements of nums array
+				if(oMap.containsKey(target - nums[i])){   // check if the difference exists for first record it wont
+					nRet[0] = i;
+					nRet [1] = oMap.get(target - nums[i]);    // if complement matches the value  return  index
+				}
+				oMap.put(nums[i],i);  // staring with the second record if exists add item to the map with index (note we are adding the value here)
+			}
+       		}
+  		return nRet;
+}
+===============================================================================
+
+Merge 2 sorted arrays
+class Solution {
+    
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        
+     int dummy[]=new int[m+n];
+        int i=0;
+        int j=0;
+        int k=0;
+        while(i<m && j<n){
+            if(nums1[i]>nums2[j]){
+                dummy[k]=nums1[i];
+                i++;
+                k++;
+            }
+            else{
+                dummy[k]=nums1[i];
+                j++;
+                k++;
+            }
+        }
+        while(i<m){
+            dummy[k++]=nums1[i++];
+        }
+        while(j<n){
+            dummy[k++]=nums2[j++];
+        }
+        
+        
+        
+    }
+    
+}
+===============================================================================================
+Valid Parenthesis
+Stack<Character> stk  = new Stack<>();
+    char temp[] = s.toCharArray();
+    for(char c : temp)
+    {
+        if(c == '(' || c == '[' || c == '{'){
+            stk.push(c);
+            continue;
+        }
+        if(!stk.empty()){
+            if((c == ')' && stk.peek() == '(') || (c == ']' && stk.peek() == '[') || (c == '}' && stk.peek() == '{'))
+                stk.pop();
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+    if(stk.empty())
+        return true;
+    return false;
+
+==============================================================================================
+intersection of linkedlist
+
+int intersectPoint(Node head1, Node head2)
+{
+	    Node a= head1;
+	    Node b= head2;
+         // code here
+         while(a!=b){
+             if(a==null){
+                 a=head2;
+             }
+             else{
+                 a=a.next;
+             }
+             
+             if(b==null){
+                 b=head1;
+             }
+             else{
+                 b = b.next;
+             }
+         }
+         return a.data;
+}
+
+==============================================================================================
+reverse in groups:
+
+ public static Node reverse(Node node, int k)
+    {
+        //Your code here
+        Node temp =node;
+        Node req= node;
+        while(temp!=null){
+            int i=0;
+            int j=k;
+            int arr[]=new int[k];
+            while(j!=0 && temp !=null){
+                
+                arr[i]=temp.data;
+                j--;
+                i++;
+                temp=temp.next;
+            }
+            
+            for(int l=i-1;l>=0 && req!=null;l--){
+               req.data=arr[l];
+               req=req.next;
+               
+            }
+            
+            
+        }
+        return node;
+    }
+==================================================================================
+
+add two linked list
+
+ static Node addTwoLists(Node first, Node second){
+        // code here
+        // return head of sum list
+        Node req=null;
+        Node act=null;
+        first=reverse(first);
+        second=reverse(second);
+        int carry1=0;
+        int carry2=0;
+        while(first!=null && second!=null){
+            int sum = first.data + second.data+carry2;
+            carry1=sum%10;
+            carry2=sum/10;
+            Node temp= new Node(carry1);
+            if(req==null){
+                req=temp;
+                act=temp;
+            }
+            else{
+                req.next=temp;
+                req=temp;
+            }
+            first=first.next;
+            second=second.next;
+        }
+        while(first!=null){
+            int sum = first.data +carry2;
+            carry1=sum%10;
+            carry2=sum/10;
+            Node temp= new Node(carry1);
+            if(req==null){
+                req=temp;
+                act=temp;
+            }
+            else{
+                req.next=temp;
+                req=temp;
+            }
+            first=first.next;
+        }
+        while(second!=null){
+            int sum = second.data +carry2;
+            carry1=sum%10;
+            carry2=sum/10;
+            Node temp= new Node(carry1);
+            if(req==null){
+                req=temp;
+                act=temp;
+            }
+            else{
+                req.next=temp;
+                req=temp;
+            }
+            second= second.next;
+        }
+        
+        if(carry2!=0){
+             Node temp= new Node(carry2);
+            if(req==null){
+                req=temp;
+                act=temp;
+            }
+            else{
+                req.next=temp;
+                req=temp;
+            }
+        }
+        return reverse(act);
+  }
+===================================================================================================
+
+Convert into a binary tree
+
+ //Function to convert binary tree to doubly linked list and return it.
+   static Node head=null;
+    static Node prev=null;
+    Node bToDLL(Node root)
+    {
+        head=null;
+        prev=null;
+        Solution temp=new Solution();
+	    act(root);
+	    return head;
+	    
+	}
+     void act(Node root){
+	    if(root==null)
+	    return;
+	    
+	   act(root.left);
+	    if(head==null){
+	        head=root;
+	        prev=root;
+	    }
+	    else{
+	        prev.right=root;
+	        root.left=prev;
+	        prev=root;
+	    }
+	    
+	    act(root.right);
+	}
+===================================================================================================
+REMOve loop in a linked list
+
+ public static void removeLoop(Node head){
+        // code here
+        // remove the loop without losing any nodes
+        
+        Node temp1=head;
+        Node temp2=head;
+        while(temp1!=null && temp2!=null && temp2.next!=null){
+            temp1=temp1.next;
+            temp2=temp2.next.next;
+            if(temp1==temp2){
+                System.out.println(1);
+                breakloop(temp1,head);
+                return;
+            }
+        }
+        System.out.println(0);
+    }
+    
+    public static void breakloop(Node loop, Node head){
+        while(loop.next!=head.next){
+            loop=loop.next;
+            head=head.next;
+        }
+        loop.next=null;
+    }
+====================================================================================================
+Level order traversal by using queue
+
+ static ArrayList <Integer> levelOrder(Node node) 
+    {
+        // Your code here
+        ArrayList<Integer> al=new ArrayList<>();
+        Queue<Node> q=new LinkedList<>();
+        q.add(node);
+        while(!q.isEmpty()){
+            Node temp = q.poll();
+            al.add(temp.data);
+            if(temp.left!=null)
+            {
+                q.add(temp.left);
+            }
+            if(temp.right!=null)
+            {
+                q.add(temp.right);
+            }
+        }
+        return al;
+        
+    }
+
+=========================================================================
+
+Level order traversal 2nd method:
+
+* function to print level order traversal of tree*/
+    void printLevelOrder()
+    {
+        int h = height(root);
+        int i;
+        for (i=1; i<=h; i++)
+            printCurrentLevel(root, i);
+    }
+ 
+    /* Compute the "height" of a tree -- the number of
+    nodes along the longest path from the root node
+    down to the farthest leaf node.*/
+    int height(Node root)
+    {
+        if (root == null)
+           return 0;
+        else
+        {
+            /* compute  height of each subtree */
+            int lheight = height(root.left);
+            int rheight = height(root.right);
+             
+            /* use the larger one */
+            if (lheight > rheight)
+                return(lheight+1);
+            else return(rheight+1);
+        }
+    }
+ 
+    /* Print nodes at the current level */
+    void printCurrentLevel (Node root ,int level)
+    {
+        if (root == null)
+            return;
+        if (level == 1)
+            System.out.print(root.data + " ");
+        else if (level > 1)
+        {
+            printCurrentLevel(root.left, level-1);
+            printCurrentLevel(root.right, level-1);
+        }
+    }
+ ========================================================================
+
+Left View of a binary tree :
+
+  //Function to return list containing elements of left view of binary tree.
+    ArrayList<Integer> leftView(Node root)
+    {
+      // Your code here
+      if(root==null)
+      return new ArrayList<>();
+      ArrayList<Integer> al = new ArrayList<>();
+      Queue<Node> qe =new LinkedList<>();
+      qe.add(root);
+      while(!qe.isEmpty()){
+          int x = qe.size();
+          for(int i=0;i<x;i++){
+              Node temp = qe.poll();
+              if(i==0){
+                  al.add(temp.data);
+              }
+              if(temp.left!=null){
+                  qe.add(temp.left);
+              }
+              if(temp.right!=null){
+                  qe.add(temp.right);
+              }
+          }
+      }
+      return al;
+      
+    }
+
+====================================================================================
+Left View of a binary tree :
+
+static int max_level = 0;
+ 
+    // recursive function to print left view
+    void leftViewUtil(Node node, int level)
+    {
+        // Base Case
+        if (node == null)
+            return;
+ 
+        // If this is the first node of its level
+        if (max_level < level) {
+            System.out.print(" " + node.data);
+            max_level = level;
+        }
+ 
+        // Recur for left and right subtrees
+        leftViewUtil(node.left, level + 1);
+        leftViewUtil(node.right, level + 1);
+    }
+ 
+    // A wrapper over leftViewUtil()
+    void leftView()
+    {
+        leftViewUtil(root, 1);
+    }
+ =====================================================
+
+Right View of binary tree
+
+Node root;
+    Max_level max = new Max_level();
+ 
+    // Recursive function to print right view of a binary tree.
+    void rightViewUtil(Node node, int level, Max_level max_level) {
+ 
+        // Base Case
+        if (node == null)
+            return;
+ 
+        // If this is the last Node of its level
+        if (max_level.max_level < level) {
+            System.out.print(node.data + " ");
+            max_level.max_level = level;
+        }
+ 
+        // Recur for right subtree first, then left subtree
+        rightViewUtil(node.right, level + 1, max_level);
+        rightViewUtil(node.left, level + 1, max_level);
+    }
+ 
+    void rightView()
+    {
+        rightView(root);
+    }
+
+============================================================
+
+Right View of binary tree:
+// function to print Right view of
+// binary tree
+void printRightView(Node* root)
+{
+    if (root == NULL)
+        return;
+ 
+    queue<Node*> q;
+    q.push(root);
+ 
+    while (!q.empty()) {
+        // get number of nodes for each level
+        int n = q.size();
+ 
+        // traverse all the nodes of the current level
+        while (n--) {
+ 
+            Node* x = q.front();
+            q.pop();
+ 
+            // print the last node of each level
+            if (n == 0) {
+                cout << x->data << " ";
+            }
+            // if left child is not null push it into the
+            // queue
+            if (x->left)
+                q.push(x->left);
+            // if right child is not null push it into the
+            // queue
+            if (x->right)
+                q.push(x->right);
+        }
+    }
+}
+==============================================================
+
+
+//Function to remove a loop in the linked list.
+    public static void removeLoop(Node head){
+        if(head==null){
+            return;
+        }
+        Node slow=head, fast=head.next;
+        while(slow!=fast && fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        if(slow==fast){
+            slow=head;
+            while(fast.next!=slow){
+                slow=slow.next;
+                fast=fast.next;
+            }
+            fast.next=null;
+        }
+    }
+
+============================================================================
+
+//Function to check if the linked list has a loop.
+    public static boolean detectLoop(Node head){
+        Node slow_ = head;
+        Node fast_ = head;
+        while(slow_ != null && fast_.next != null && fast_.next.next != null){
+            fast_ = fast_.next.next;
+            slow_ =  slow_.next;
+            if(slow_ == fast_)
+            return true;
+        }
+        return false;
+    }
+
+=============================================================================
+DFS of graph
+// A function used by DFS
+    void DFSUtil(int v, boolean visited[])
+    {
+        // Mark the current node as visited and print it
+        visited[v] = true;
+        System.out.print(v + " ");
+ 
+        // Recur for all the vertices adjacent to this
+        // vertex
+        Iterator<Integer> i = adj[v].listIterator();
+        while (i.hasNext())
+        {
+            int n = i.next();
+            if (!visited[n])
+                DFSUtil(n, visited);
+        }
+    }
+
+================================================================================
+// prints BFS traversal from a given source s
+    void BFS(int s)
+    {
+        // Mark all the vertices as not visited(By default
+        // set as false)
+        boolean visited[] = new boolean[V];
+ 
+        // Create a queue for BFS
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+ 
+        // Mark the current node as visited and enqueue it
+        visited[s]=true;
+        queue.add(s);
+ 
+        while (queue.size() != 0)
+        {
+            // Dequeue a vertex from queue and print it
+            s = queue.poll();
+            System.out.print(s+" ");
+ 
+            // Get all adjacent vertices of the dequeued vertex s
+            // If a adjacent has not been visited, then mark it
+            // visited and enqueue it
+            Iterator<Integer> i = adj[s].listIterator();
+            while (i.hasNext())
+            {
+                int n = i.next();
+                if (!visited[n])
+                {
+                    visited[n] = true;
+                    queue.add(n);
+                }
+            }
+        }
+    }
+===============================================================================
+Remove duplicates
+void printRepeating(int arr[], int size)
+    {
+        int i;
+        System.out.println("The repeating elements are : ");
+         
+        for (i = 0; i < size; i++) {
+            int j = Math.abs(arr[i]);
+            if (arr[j] >= 0)
+                arr[j] = -arr[j];
+            else
+                System.out.print(j + " ");
+        }
+    }
+===============================================================================
+
+Max sum contiguos sub array
+
+static int maxSubArraySum(int a[])
+    {
+        int size = a.length;
+        int max_so_far = Integer.MIN_VALUE, max_ending_here = 0;
+ 
+        for (int i = 0; i < size; i++)
+        {
+            max_ending_here = max_ending_here + a[i];
+            if (max_so_far < max_ending_here)
+                max_so_far = max_ending_here;
+            if (max_ending_here < 0)
+                max_ending_here = 0;
+        }
+        return max_so_far;
+    }
+
+==================================================================================
+
+static void printLargest(Vector<String> arr)
+    {
+ 
+        Collections.sort(arr, new Comparator<String>()
+        {
+            // A comparison function which is used by
+            // sort() in printLargest()
+            @Override public int compare(String X, String Y)
+            {
+ 
+                // first append Y at the end of X
+                String XY = X + Y;
+ 
+                // then append X at the end of Y
+                String YX = Y + X;
+ 
+                // Now see which of the two
+                // formed numbers
+                // is greater
+                return XY.compareTo(YX) > 0 ? -1 : 1;
+            }
+        });
+ 
+        Iterator it = arr.iterator();
+ 
+        while (it.hasNext())
+            System.out.print(it.next());
+    }
+ =======================================================================================
+Reverse Bits ::
+
+ public static int reverseBits(int n)
+    {
+        int rev = 0;
+ 
+        // traversing bits of 'n'
+        // from the right
+        while (n > 0)
+        {
+            // bitwise left shift
+            // 'rev' by 1
+            rev <<= 1;
+ 
+            // if current bit is '1'
+            if ((int)(n & 1) == 1)
+                rev ^= 1;
+ 
+            // bitwise right shift
+            //'n' by 1
+            n >>= 1;
+        }
+        // required number
+        return rev;
+    }
+===========================================================================================
+Calculate no of bits :
+
+ // Returns count of set bits present
+    //  in all numbers from 1 to n
+    static int countSetBits( int n)
+    {
+        // initialize the result
+        int bitCount = 0;
+     
+        for (int i = 1; i <= n; i++)
+            bitCount += countSetBitsUtil(i);
+     
+        return bitCount;
+    }
+     
+    // A utility function to count set bits
+    // in a number x
+    static int countSetBitsUtil( int x)
+    {
+        if (x <= 0)
+            return 0;
+        return (x % 2 == 0 ? 0 : 1) +
+               countSetBitsUtil(x / 2);
+    }
+     
+============================================================================================
+
+
+
+
+
+
+
+
+
+

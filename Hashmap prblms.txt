@@ -1,0 +1,852 @@
+//HashMap prblms
+Intersection of 2 arrays
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+       HashMap<Integer,Boolean> hm=new HashMap<>();
+        ArrayList<Integer> al=new ArrayList<>();
+       for(int i=0;i<nums1.length;i++){
+           if(!hm.containsKey(nums1[i])){
+               hm.put(nums1[i],true);
+           }
+       }
+       for(int j=0;j<nums2.length;j++){
+           if(hm.containsKey(nums2[j])  &&  hm.get(nums2[j])==true){
+               al.add(nums2[j]);
+               hm.put(nums2[j],false);
+           }
+       }
+       int []arr = new int[al.size()];
+  
+        // ArrayList to Array Conversion
+        for (int i = 0; i < al.size(); i++)
+            arr[i] = al.get(i);
+        
+        return arr;
+    }
+}
+=================================================================================================
+// Total Unique elements in each window
+class Solution
+{
+    ArrayList<Integer> countDistinct(int A[], int n, int k)
+    {
+        // code here 
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        ArrayList<Integer> al=new ArrayList<>();
+        int dist=0;
+        //int acquire=0;
+        int release=0;
+        for(int i=0;i<k;i++){
+            if(hm.containsKey(A[i])){
+                hm.put(A[i],hm.get(A[i])+1);
+            }else{
+                dist++;
+                hm.put(A[i],1);
+            }
+        }
+        al.add(dist);
+        for(int i=k;i<n;i++){
+            int disc=A[release];
+            hm.put(disc,hm.get(disc)-1);
+            release++;
+            if(hm.get(disc)==0){
+               hm.remove(disc);
+               dist--;
+            }
+            
+            if(hm.containsKey(A[i])){
+                hm.put(A[i],hm.get(A[i])+1);
+            }else{
+                dist++;
+                hm.put(A[i],1);
+            }    
+            
+            al.add(dist);
+        }
+        
+        return al;
+        
+    }
+}
+
+================================================================================
+//Count Of Substrings Having All Unique Characters
+import java.util.*;
+
+public class Main {
+
+	public static int solution(String str) {
+		// write your code here
+		HashMap<Character,Integer> hm=new HashMap<>();
+		int answer=0;
+		int release=0;
+		for(int i=0;i<str.length();i++){
+		    Character currentChar=str.charAt(i);
+		    while( hm.containsKey(currentChar)){
+		        Character disChar=str.charAt(release);
+		        hm.put(disChar,hm.get(disChar)-1);
+		        if(hm.get(disChar)==0){
+		            hm.remove(disChar);
+		        }
+		        release++;
+		    }
+		    hm.put(currentChar,1);
+		    answer=answer+(i-release+1);
+		}
+		return answer;
+	}
+	
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+		String str = scn.next();
+		System.out.println(solution(str));
+	}
+
+}
+======================================================================================
+// Longest Substring Without Repeating Characters
+class Solution {
+    public int lengthOfLongestSubstring(String str) {
+        	// write your code here
+		HashMap<Character,Boolean> hm=new HashMap<>();
+		int answer=0;
+		int release=0;
+		for(int i=0;i<str.length();i++){
+		    Character currentChar=str.charAt(i);
+		    while( hm.containsKey(currentChar)){
+		        Character disChar=str.charAt(release);
+		        hm.put(disChar,false);
+		        
+		            hm.remove(disChar);
+		        
+		        release++;
+		    }
+		    hm.put(currentChar,true);
+		    answer=Math.max(answer,(i-release+1));
+		}
+		return answer;
+    }
+}
+============================================================================================
+import java.util.*;
+
+public class Main {
+
+	public static int solution(String str) {
+		// write your code here
+		HashMap<Character,Integer> hm=new HashMap<>();
+		int release=0;
+		int total=0;
+		for(int i=0;i<str.length();i++){
+		    Character cchar=str.charAt(i);
+		  //  while(hm.containsKey(cchar)){
+		  //      Character disc=str.charAt(release);
+		  //      hm.put(disc,hm.get(disc)-1);
+		  //      if(hm.get(disc)==0){
+		  //          hm.remove(disc);
+		  //      }
+		  //      release++;
+		  //  }
+		   if(hm.containsKey(cchar) && hm.get(cchar)>=release){
+		       release=hm.get(cchar)+1;
+		   }
+		    hm.put(cchar,i);
+		    total=total+(i-release+1);
+		}
+		
+		return total;
+	}
+	
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+		String str = scn.next();
+		System.out.println(solution(str));
+	}
+
+}
+==================================================================================
+Count Of Substrings Having At Most K Unique Characters
+	public static int solution(String str, int k) {
+		// write your code here
+		int release=0;
+		int answer=0;
+		int distnict=0;
+		HashMap<Character,Integer> hm=new HashMap<>();
+		for(int i=0;i<str.length();i++){
+		    Character cuurchar=str.charAt(i);
+		    if(hm.containsKey(cuurchar)){
+		       int x=hm.get(cuurchar);
+		      x++
+		       hm.put(cuurchar,x);
+		    }else{
+		        hm.put(cuurchar,1);
+		        distnict++;
+		    }
+		    
+		    while(distnict>k){
+		        Character disc=str.charAt(release);
+		        hm.put(disc,hm.get(disc)-1);
+		        if(hm.get(disc)==0){
+		            hm.remove(disc);
+		            distnict--;
+		        }
+		        
+		        release++;
+		    }
+		    
+		    answer=answer+(i-release+1);
+		    
+		}
+		
+		return answer;
+	}
+
+===================================================================
+Longest Substring with At Most K Distinct Characters
+ public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        	// write your code here
+		int release=0;
+		int answer=0;
+		int distnict=0;
+		HashMap<Character,Integer> hm=new HashMap<Character,Integer>();
+		for(int i=0;i<str.length();i++){
+		    Character cuurchar=str.charAt(i);
+		    if(hm.containsKey(cuurchar)){
+		       int x=hm.get(cuurchar);
+		       x++;
+		       hm.put(cuurchar,x);
+		    }else{
+		        hm.put(cuurchar,1);
+		        distnict++;
+		    }
+		    
+		    while(release<=i && distnict>k){
+		        Character disc=str.charAt(release);
+		        release++;
+		        int y= hm.get(disc)-1;
+		        hm.put(disc,y);
+		        if(hm.get(disc)==0){
+		            hm.remove(disc);
+		            distnict--;
+		        }
+		        
+		    }
+		    
+		    answer=Math.max(answer,(i-release+1));
+		    
+		}
+		
+		return answer;
+        // write your code here
+    }
+==================================================================
+Count number of substrings with exatly k unique characters
+
+class Solution
+{
+    long substrCount (String S, int K) {
+        long ans= Atmost(S,K)-Atmost(S,K-1);
+        return ans==0?0:ans;
+    }
+    long Atmost (String S, int K){
+        // your code here
+        int answer=0;
+        int release=0;
+        int dist=0;
+        HashMap<Character,Integer> hm=new HashMap<>();
+        for(int i=0;i<S.length();i++){
+            Character currchar =S.charAt(i);
+            if(hm.containsKey(currchar)){
+                hm.put(currchar,hm.get(currchar)+1);
+            }else{
+                hm.put(currchar,1);
+                dist++;
+            }
+            
+            while(i>=release && dist>K){
+                Character disc =S.charAt(release);
+                hm.put(disc,hm.get(disc)-1);
+                if(hm.get(disc)==0){
+                    hm.remove(disc);
+                    dist--;
+                }
+                release++;
+            }
+            
+           
+                answer=answer+(i-release+1);
+            
+            
+        }
+        return answer;
+    }
+}
+=================================================================
+992. Subarrays with K Different Integers
+class Solution {
+    public int subarraysWithKDistinct(int[] nums, int K) {
+        int ans= Atmost(nums,K)-Atmost(nums,K-1);
+        return ans==0?0:ans;
+    }
+    int Atmost (int[] nums, int K){
+        // your code here
+        int answer=0;
+        int release=0;
+        int dist=0;
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            int currchar =nums[i];
+            if(hm.containsKey(currchar)){
+                hm.put(currchar,hm.get(currchar)+1);
+            }else{
+                hm.put(currchar,1);
+                dist++;
+            }
+            
+            while(i>=release && dist>K){
+                int disc =nums[release];
+                hm.put(disc,hm.get(disc)-1);
+                if(hm.get(disc)==0){
+                    hm.remove(disc);
+                    dist--;
+                }
+                release++;
+            }
+            
+           
+                answer=answer+(i-release+1);
+            
+            
+        }
+        return answer;
+    }
+}
+================================================================
+Longest K unique characters substring 
+
+class Solution {
+    public int longestkSubstr(String str, int k) {
+        // code here
+        // write your code here
+		int release=0;
+		int answer=0;
+		int distnict=0;
+		HashMap<Character,Integer> hm=new HashMap<Character,Integer>();
+		for(int i=0;i<str.length();i++){
+		    Character cuurchar=str.charAt(i);
+		    if(hm.containsKey(cuurchar)){
+		       int x=hm.get(cuurchar);
+		       x++;
+		       hm.put(cuurchar,x);
+		    }else{
+		        hm.put(cuurchar,1);
+		        distnict++;
+		    }
+		    
+		    while(release<=i && distnict>k){
+		        Character disc=str.charAt(release);
+		        release++;
+		        int y= hm.get(disc)-1;
+		        hm.put(disc,y);
+		        if(hm.get(disc)==0){
+		            hm.remove(disc);
+		            distnict--;
+		        }
+		        
+		    }
+		    
+		    if(distnict==k)
+		    answer=Math.max(answer,(i-release+1));
+		    
+		}
+		
+		return answer==0?-1:answer;
+        // write your code here
+    }
+}
+================================================================
+Equal 0, 1 and 2 
+
+long getSubstringWithEqual012(String str) 
+    { 
+        // code here
+        int z1=0;
+        int z2=0;
+        int z3=0;
+        HashMap<String,Integer> hm=new HashMap<>();
+        
+        long ans=0;
+        String exp=(z2-z1)+"#"+(z3-z2);
+        hm.put(exp,1);
+        for(int i=0;i<str.length();i++){
+            
+            if(str.charAt(i)=='0'){
+               z1++; 
+            }
+            
+            if(str.charAt(i)=='1'){
+                z2++;
+            }
+            
+            if(str.charAt(i)=='2'){
+                z3++;
+            }
+            
+         exp=(z2-z1)+"#"+(z3-z2);
+         if(hm.containsKey(exp)){
+             ans=ans+hm.get(exp);
+             int x=hm.get(exp)+1;
+             hm.put(exp,x);
+         }else{
+             hm.put(exp,1);
+         }
+        }
+        return ans;
+    }
+==========================================================================
+Longest Subarray With Equal Number Of 0s 1s And 2s
+
+import java.util.*;
+
+public class Main {
+
+    public static int solution(int[] arr) {
+        // write your code here
+
+         // code here
+        int z1=0;
+        int z2=0;
+        int z3=0;
+        HashMap<String,Integer> hm=new HashMap<>();
+        
+        int ans=0;
+        String exp=(z2-z1)+"#"+(z3-z2);
+        hm.put(exp,-1);
+        for(int i=0;i<arr.length;i++){
+            
+            if(arr[i]==0){
+               z1++; 
+            }
+            
+            if(arr[i]==1){
+                z2++;
+            }
+            
+            if(arr[i]==2){
+                z3++;
+            }
+            
+         exp=(z2-z1)+"#"+(z3-z2);
+         if(hm.containsKey(exp)){
+             ans=Math.max(ans,i-hm.get(exp));
+            //  int x=hm.get(exp)+1;
+            //  hm.put(exp,x);
+         }else{
+             hm.put(exp,i);
+         }
+        }
+        return ans;
+    }
+    
+    public static void main(String[] args) {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = scn.nextInt();
+        }
+        System.out.println(solution(arr));
+    }
+
+}
+==================================================================
+Largest Sum Contiguous Subarray
+
+import java.io.*;
+// Java program to print largest contiguous array sum
+import java.util.*;
+
+class Kadane
+{
+	public static void main (String[] args)
+	{
+		int [] a = {-2, -3, 4, -1, -2, 1, 5, -3};
+		System.out.println("Maximum contiguous sum is " +
+		maxSubArraySum(a));
+	}
+
+	static int maxSubArraySum(int a[])
+	{
+		int size = a.length;
+		int max_so_far = Integer.MIN_VALUE, max_ending_here = 0;
+
+		for (int i = 0; i < size; i++)
+		{
+			max_ending_here = max_ending_here + a[i];
+			if (max_so_far < max_ending_here)
+				max_so_far = max_ending_here;
+			if (max_ending_here < 0)
+				max_ending_here = 0;
+		}
+		return max_so_far;
+	}
+}
+===========================================================================================
+Subarray Sum Equals K
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        int sum=0;
+        int count=0;
+        hm.put(0,1);
+        for(int i=0;i<nums.length;i++)
+        {
+            sum=sum+nums[i];
+            if(hm.containsKey(sum-k))
+                count+=hm.get(sum-k);
+                
+              if(hm.containsKey(sum)){
+                  hm.put(sum,hm.get(sum)+1);
+              }else{
+                  hm.put(sum,1);
+              }
+               
+        }
+        return count;
+        
+    }
+}
+================================================================================================
+Longest Sub-Array with Sum K 
+
+// Function for finding maximum and value pair
+    public static int lenOfLongSubarr (int nums[], int N, int k) {
+        //Complete the function
+         HashMap<Integer,Integer> hm=new HashMap<>();
+        int sum=0;
+        int count=0;
+        hm.put(0,-1);
+        for(int i=0;i<nums.length;i++)
+        {
+            sum=sum+nums[i];
+            if(hm.containsKey(sum-k))
+                count=Math.max(count,i-hm.get(sum-k));
+                
+              if(!hm.containsKey(sum)){
+                  hm.put(sum,i);
+              }
+        }
+        return count;
+    }
+
+=================================================================================================
+Largest subarray with 0 sum 
+
+
+
+class GfG
+{
+    int maxLen(int arr[], int n)
+    {
+        // Your code here
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        hm.put(0,-1);
+        int ans=0;
+        int sum=0;
+        for(int i=0;i<n;i++){
+            sum=sum+arr[i];
+            if(hm.containsKey(sum)){
+                ans=Math.max(ans,i-hm.get(sum));
+            }else{
+                hm.put(sum,i);
+            }
+        }
+        
+        return ans;
+        
+    }
+}
+=======================================================================================
+Largest subarray of 0's and 1's 
+ int maxLen(int[] arr, int N)
+    {
+        // Your code here
+        int prefix=0;
+        int ans=0;
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        hm.put(0,-1);
+        for(int i=0;i<N;i++){
+            if(arr[i]==0){
+                prefix=prefix-1;
+            }
+            if(arr[i]==1){
+                prefix=prefix+1;
+            }
+            if(hm.containsKey(prefix)){
+                ans=Math.max(ans,i-hm.get(prefix));
+            }else{
+                hm.put(prefix,i);
+            }
+        }
+        return ans;
+    }
+====================================================================================
+
+Subarrays with equal 1s and 0s 
+
+    //Function to count subarrays with 1s and 0s.
+    static int countSubarrWithEqualZeroAndOne(int arr[], int N)
+    {
+        // add your code here
+          // Your code here
+        int prefix=0;
+        int ans=0;
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        hm.put(0,1);
+        for(int i=0;i<N;i++){
+            if(arr[i]==0){
+                prefix=prefix-1;
+            }
+            if(arr[i]==1){
+                prefix=prefix+1;
+            }
+            if(hm.containsKey(prefix)){
+                ans=ans+hm.get(prefix);
+                 hm.put(prefix,hm.get(prefix)+1);
+            }else{
+                hm.put(prefix,1);
+            }
+        }
+        return ans;
+    }
+==========================================================================================
+1497. Check If Array Pairs Are Divisible by k
+ public boolean canArrange(int[] arr, int k) {
+        int memo[]=new int[k];
+        for(int i=0;i<arr.length;i++){
+            int x=((arr[i]%k)+k)%k;
+            memo[x]++;
+        }
+        
+        for(int i=0;i<=k/2;i++){
+            if(i==0 ){
+                if(memo[i]%2!=0)
+                return false;
+            }
+            else{
+                int req=k-i;
+                if(memo[i]!=memo[req])
+                    return false;
+            }
+        }
+        return true;
+    }
+=========================================================================================
+974. Subarray Sums Divisible by K
+ public int subarraysDivByK(int[] nums, int k) {
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        hm.put(0,1);
+        int ans=0;
+        int sum=0;
+        for(int i=0;i<nums.length;i++){
+            sum+=nums[i];
+            int rem=((sum%k)+k)%k;
+            if(hm.containsKey(rem)){
+                ans=ans+hm.get(rem);
+                hm.put(rem,hm.get(rem)+1);
+            }else{
+                hm.put(rem,1);
+            }
+        }
+        return ans;
+    }
+====================================================================================
+Longest subarray with sum divisible by K 
+class Solution{
+    int longSubarrWthSumDivByK(int nums[], int n, int k)
+    {
+        // Complete the function
+         HashMap<Integer,Integer> hm=new HashMap<>();
+        hm.put(0,-1);
+        int ans=0;
+        int sum=0;
+        for(int i=0;i<nums.length;i++){
+            sum+=nums[i];
+            int rem=((sum%k)+k)%k;
+            if(hm.containsKey(rem)){
+                ans=Math.max(ans,i-hm.get(rem));
+                
+            }else{
+                hm.put(rem,i);
+            }
+        }
+        return ans;
+       
+    }
+ 
+}
+================================================================================
+Count pairs with given sum
+class Solution {
+    int getPairsCount(int[] arr, int n, int k) {
+        // code here
+        int sum=0;
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        for(int i=0;i<arr.length;i++){
+            if(hm.containsKey(k-arr[i])){
+                sum=sum+hm.get(k-arr[i]);
+                
+            }
+            if(hm.containsKey(arr[i])){
+                hm.put(arr[i],hm.get(arr[i])+1); 
+            }else{
+                hm.put(arr[i],1);
+            }
+        }
+        return sum;
+        
+    }
+}
+======================================================================================
+Print all pairs with given sum
+// Returns number of pairs in arr[0..n-1]
+// with sum equal to 'sum'
+static void printPairs(int arr[], int n,
+                       int sum)
+{
+     
+    // Store counts of all elements in map m
+    HashMap<Integer,
+            Integer> mp = new HashMap<Integer,
+                                      Integer>();
+ 
+    // Traverse through all elements
+    for(int i = 0; i < n; i++)
+    {
+         
+        // Search if a pair can be formed with
+        // arr[i].
+        int rem = sum - arr[i];
+        if (mp.containsKey(rem))
+        {
+            int count = mp.get(rem);
+             
+            for(int j = 0; j < count; j++)
+                System.out.print("(" + rem +
+                                ", " + arr[i] +
+                                 ")" + "\n");
+        }
+        if (mp.containsKey(arr[i]))
+        {
+            mp.put(arr[i], mp.get(arr[i]) + 1);
+        }
+        else
+        {
+            mp.put(arr[i], 1);
+        }
+    }
+}
+ 
+// Driver code
+public static void main(String[] args)
+{
+    int arr[] = { 1, 5, 7, -1, 5 };
+    int n = arr.length;
+    int sum = 6;
+     
+    printPairs(arr, n, sum);
+}
+}
+ 
+=============================================================================
+1. Two Sum ::
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer,Integer> hm = new HashMap<>();
+        int arr[]=new int[2];
+        for(int i=0;i<nums.length;i++){
+            if(hm.containsKey(target-nums[i])){
+                arr[0]=hm.get(target-nums[i]);
+                arr[1]=i;
+            }
+            else{
+                hm.put(nums[i],i);
+            }
+        }
+        return arr;
+    }
+}
+================================================================================
+Find Pair Given Difference 
+
+    public boolean findPair(int arr[], int size, int diff)
+    {
+        //code here.
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        for(int i=0;i<arr.length;i++){
+            if(hm.containsKey(diff+arr[i])|| hm.containsKey(-diff+arr[i])){
+                return true;
+            }else{
+                hm.put(arr[i],1);
+            }
+        }
+        return false;
+    }
+=================================================================================
+33. Search in Rotated Sorted Array
+class Solution {
+    public int search(int[] nums, int k) {
+        int start=0;
+        int end=nums.length-1;
+        while(start<=end){
+            int mid=start+(end-start)/2;
+            if(nums[mid]==k)
+                return mid;
+            if(nums[mid]>=nums[start]){
+                if(nums[start]<=k && k<nums[mid]){
+                    end=mid-1;
+                }else{
+                    start=mid+1;
+                }
+            }else{
+               if(nums[mid]<k && k<=nums[end]){
+                    start=mid+1;
+                }else{
+                    end=mid-1;
+                } 
+            }
+        }
+        return -1;
+    }
+}
+=======================================================================================
+74. Search a 2D Matrix
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+       int rows=matrix.length;
+       int cols=matrix[0].length; 
+       int start=0;
+       int end=rows*cols-1; 
+       while(start<=end){
+           int mid=start+(end-start)/2;
+           int rowIndex=mid/cols; 
+           int colIndex=mid%cols;
+           if(matrix[rowIndex][colIndex]==target){
+               return true;
+           }else if(matrix[rowIndex][colIndex]>target){
+               end=mid-1;
+           }else{
+               start=mid+1;
+           }
+       }
+     return false;
+   }
+}
+===========================================================================================
+
+
+
+
+

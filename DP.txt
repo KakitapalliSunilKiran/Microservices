@@ -1,0 +1,650 @@
+
+baalu.chintu@gmail.com
+
+min cost to climb stairs
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int a= climbing(0,cost.length,new HashMap<Integer,Integer>(),cost);
+        int b= climbing(1,cost.length,new HashMap<Integer,Integer>(),cost);
+        return Math.min(a,b);
+    }
+    public int climbing(int z, int target, HashMap<Integer,Integer> hm,int[] cost){
+        if(z==target)
+            return 0;
+        if(z>target)
+            return 999;
+        
+        int key=z;
+        if(hm.containsKey(key))
+            return hm.get(key);
+        
+        int oneStep=cost[z]+climbing( z+1,  target, hm,cost);
+        int secondStep=cost[z]+climbing( z+2,  target, hm,cost);
+            
+            hm.put(key,Math.min(oneStep,secondStep));
+        return Math.min(oneStep,secondStep);
+    }
+}
+
+===============================================================================
+tribanocci series
+class Solution {
+    public int tribonacci(int n) {
+        return climbing( n,new HashMap<Integer,Integer>());
+    }
+    
+    public int climbing(int z,HashMap<Integer,Integer> hm){
+        if(z<=1)
+            return z;
+        
+        if(z==2)
+            return 1;
+        
+        int key=z;
+        if(hm.containsKey(z))
+            return hm.get(z);
+        
+        int oneStep=climbing( z-1,hm);
+        int secondStep=climbing( z-2,hm);
+        int thirdStep=climbing( z-3,hm);
+        
+        hm.put(key,oneStep+secondStep+thirdStep);
+        return oneStep+secondStep+thirdStep;
+        
+    }
+}
+=============================================================
+climbing stairs
+class Solution {
+    public int climbStairs(int n) {
+       return climbing(0,n,new HashMap<Integer,Integer>());
+    }
+    public int climbing(int z,int n,HashMap<Integer,Integer> hm){
+        if(z==n)
+            return 1;
+        if(z>n)
+            return 0;
+        
+        int key=z;
+        if(hm.containsKey(z))
+            return hm.get(z);
+        
+        int oneStep=climbing( z+1, n,hm);
+        int secondStep=climbing( z+2, n,hm);
+        
+        hm.put(key,oneStep+secondStep);
+        return oneStep+secondStep;
+        
+    }
+}
+============================================================
+2 Sum
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer,Integer> hm = new HashMap<>();
+        int arr[]=new int[2];
+        for(int i=0;i<nums.length;i++){
+            if(hm.containsKey(target-nums[i])){
+                arr[0]=hm.get(target-nums[i]);
+                arr[1]=i;
+            }
+            else{
+                hm.put(nums[i],i);
+            }
+        }
+        return arr;
+    }
+}
+===================================================================
+// Java program to find maximum path sum in Binary Tree
+
+/* Class containing left and right child of current
+node and key value*/
+class Node {
+
+	int data;
+	Node left, right;
+
+	public Node(int item) {
+		data = item;
+		left = right = null;
+	}
+}
+
+// An object of Res is passed around so that the
+// same value can be used by multiple recursive calls.
+class Res {
+	public int val;
+}
+
+class BinaryTree {
+
+	// Root of the Binary Tree
+	Node root;
+
+	// This function returns overall maximum path sum in 'res'
+	// And returns max path sum going through root.
+	int findMaxUtil(Node node, Res res)
+	{
+
+		// Base Case
+		if (node == null)
+			return 0;
+
+		// l and r store maximum path sum going through left and
+		// right child of root respectively
+		int l = findMaxUtil(node.left, res);
+		int r = findMaxUtil(node.right, res);
+
+		// Max path for parent call of root. This path must
+		// include at-most one child of root
+		int max_single = Math.max(Math.max(l, r) + node.data,
+								node.data);
+
+
+		// Max Top represents the sum when the Node under
+		// consideration is the root of the maxsum path and no
+		// ancestors of root are there in max sum path
+		int max_top = Math.max(max_single, l + r + node.data);
+
+		// Store the Maximum Result.
+		res.val = Math.max(res.val, max_top);
+
+		return max_single;
+	}
+
+	int findMaxSum() {
+		return findMaxSum(root);
+	}
+
+	// Returns maximum path sum in tree with given root
+	int findMaxSum(Node node) {
+
+		// Initialize result
+		// int res2 = Integer.MIN_VALUE;
+		Res res = new Res();
+		res.val = Integer.MIN_VALUE;
+
+		// Compute and return result
+		findMaxUtil(node, res);
+		return res.val;
+	}
+
+	/* Driver program to test above functions */
+	public static void main(String args[]) {
+		BinaryTree tree = new BinaryTree();
+		tree.root = new Node(10);
+		tree.root.left = new Node(2);
+		tree.root.right = new Node(10);
+		tree.root.left.left = new Node(20);
+		tree.root.left.right = new Node(1);
+		tree.root.right.right = new Node(-25);
+		tree.root.right.right.left = new Node(3);
+		tree.root.right.right.right = new Node(4);
+		System.out.println("maximum path sum is : " +
+							tree.findMaxSum());
+	}
+}
+==========================================================================================
+Equal Partition
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum=0;
+        for(int i : nums)
+            sum=sum+i;
+        
+        if(sum%2!=0)
+            return false;
+        
+        return canPart(sum/2, 0, nums.length,nums,new HashMap<String,Boolean>());
+    }
+    public boolean canPart(int target,int s,int N,int arr[],HashMap<String,Boolean> hm) {
+       if(target==0)
+           return true;
+        if(s==N && target!=0)
+            return false;
+        
+        String key=s+" "+target;
+        if(hm.containsKey(key))
+            return hm.get(key);
+        
+        
+        if(arr[s]>target){
+            return canPart(target,s+1,N,arr, hm);
+        }
+        hm.put(key,canPart(target-arr[s],s+1,N,arr, hm) || canPart(target,s+1,N,arr, hm));
+        return canPart(target-arr[s],s+1,N,arr, hm) || canPart(target,s+1,N,arr, hm);
+        
+    }
+}
+===============================================================================================
+Coin Change (Minimum number of coins)
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int x= calMin(0,coins.length,amount,coins,new HashMap<String,Integer>());
+        if(x==10000)
+            return -1;
+        else 
+            return x;
+    }
+    public int calMin(int s, int n, int target,int arr[],HashMap<String,Integer> hm){
+        if( s==n)
+            return 10000 ;
+        
+        if(target==0)
+            return 0;
+        
+        
+        String key=s+" "+target;
+        
+        if(hm.containsKey(key))
+            return hm.get(key);
+        
+        if(arr[s]>target)
+            return calMin(s+1,n,target,arr,hm);
+        
+        int x=1+calMin(s,n,target-arr[s],arr,hm);
+        int y=calMin(s+1,n,target,arr,hm);
+        
+         hm.put(key,Math.min(x,y));
+        
+        return Math.min(x,y);
+    }
+}
+============================================================================================
+Coin change(total no of ways)
+class Solution {
+    public int change(int amount, int[] coins) {
+        int x= calMin(0,coins.length,amount,coins,new HashMap<String,Integer>());
+        
+            return x;
+    }
+    public int calMin(int s, int n, int target,int arr[],HashMap<String,Integer> hm){
+        if( s==n && target!=0)
+            return 0 ;
+        
+        if(target==0)
+            return 1;
+        
+        if(target<0)
+            return 0;
+        
+        
+        String key=s+" "+target;
+        
+        if(hm.containsKey(key))
+            return hm.get(key);
+        
+       // if(arr[s]>target)
+           // return calMin(s+1,n,target,arr,hm);
+        
+        int x=calMin(s,n,target-arr[s],arr,hm);
+        int y=calMin(s+1,n,target,arr,hm);
+        
+         hm.put(key,(x+y));
+        
+        return (x+y);
+    }
+}
+=======================================================================================
+target using + and -
+
+
+
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+       return findTargetSum(nums,target,0,nums.length,new HashMap<String,Integer>());
+    }
+    public int findTargetSum(int[] nums, int target, int s, int n,HashMap<String,Integer> hm){
+        
+        if(s>=n && target!=0)
+            return 0;
+        
+        if(s>=n && target==0)
+            return 1;
+        
+        String key = s+"_"+target;
+        
+        if(hm.containsKey(key))
+            return hm.get(key);
+        
+        
+        int plus= findTargetSum(nums,target-nums[s],s+1,nums.length,new  HashMap<String,Integer>());
+        
+        int minus=findTargetSum(nums,target+nums[s],s+1,nums.length,new HashMap<String,Integer>());
+        
+        hm.put(key,plus+minus);
+        return plus+minus;
+        
+    }
+}
+==============================================================================================
+Get Minimum Squares (Model 1)
+
+//User function Template for Java
+
+class Solution
+{
+    public int MinSquares(int n)
+    {
+        // Code here
+        int min=(int)Math.floor(Math.sqrt(n));
+        if(min*min==n)
+        return 1;
+       
+        int arr[]=new int[min];
+        for(int i=1;i<=min;i++){
+            arr[i-1]=i*i;
+        }
+        return getSquares(0,arr.length,arr,n,  new HashMap<>());
+    }
+    public int getSquares(int s,int n,int arr[], int target,HashMap<String,Integer> hm ){
+        
+        if(s==n)
+        return 10000;
+        
+        if(target<=0)
+        return 0;
+        
+        String key=s+"_"+target;
+        if(hm.containsKey(key))
+        return hm.get(key);
+        
+        
+        int notconsider=0;
+        if(arr[s]>target){
+           notconsider=getSquares(s+1,n,arr,target,hm);
+           return notconsider;
+        }
+        
+        notconsider=getSquares(s+1,n,arr,target,hm);
+        int consider=1+getSquares(s,n,arr,target-arr[s],hm);
+        
+        hm.put(key,Math.min(consider,notconsider));
+        return Math.min(consider,notconsider);
+        
+    }
+ }
+==============================================================================================
+//User function Template for Java
+
+class Solution
+{
+    public int MinSquares(int n)
+    {
+        // Code here
+        int min=(int)Math.floor(Math.sqrt(n));
+        if(min*min==n)
+        return 1;
+       
+        int arr[]=new int[min];
+        for(int i=1;i<=min;i++){
+            arr[i-1]=i*i;
+        }
+        return getSquares(0,arr.length,arr,n,  new HashMap<>());
+    }
+    public int getSquares(int s,int n,int arr[], int target,HashMap<String,Integer> hm ){
+        
+        if(s==n)
+        return 10000;
+        
+        if(target==0)
+        return 0;
+        
+        if(target<0)
+         return 10000;
+        
+        String key=s+"_"+target;
+        if(hm.containsKey(key))
+        return hm.get(key);
+        
+        
+        int notconsider=0;
+        //if(arr[s]>target){
+           //notconsider=getSquares(s+1,n,arr,target,hm);
+           //return notconsider;
+      //  }
+        
+        notconsider=getSquares(s+1,n,arr,target,hm);
+        int consider=1+getSquares(s,n,arr,target-arr[s],hm);
+        
+        hm.put(key,Math.min(consider,notconsider));
+        return Math.min(consider,notconsider);
+        
+    }
+        
+    
+    
+}
+==============================================================================================
+Minimum cost climbing stairs(either we can take 1 or 2 steps at a time)
+
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int a= climbing(0,cost.length,new HashMap<Integer,Integer>(),cost);
+        int b= climbing(1,cost.length,new HashMap<Integer,Integer>(),cost);
+        return Math.min(a,b);
+    }
+    public int climbing(int z, int target, HashMap<Integer,Integer> hm,int[] cost){
+        if(z==target)
+            return 0;
+        if(z>target)
+            return 999;
+        
+        int key=z;
+        if(hm.containsKey(key))
+            return hm.get(key);
+        
+        int oneStep=cost[z]+climbing( z+1,  target, hm,cost);
+        int secondStep=cost[z]+climbing( z+2,  target, hm,cost);
+            
+            hm.put(key,Math.min(oneStep,secondStep));
+        return Math.min(oneStep,secondStep);
+    }
+}
+=======================================================================================================
+Rod Cutting Problem 
+
+class Solution{
+    public int cutRod(int price[], int n) {
+        //code here
+        return cutting(0,n,n,price,new HashMap<String,Integer>());
+    }
+    public int cutting(int s,int target,int n, int price[],HashMap<String,Integer> hm){
+        if(s==n)
+        return 0;
+        
+        if(target==0)
+        return 0;
+        
+        String key=target+"_"+s;
+        if(hm.containsKey(key))
+        return hm.get(key);
+        if(target>=s+1){
+          hm.put(key,Math.max((price[s]+cutting(s,target-(s+1),n,price,new HashMap<>())),cutting(s+1,target,n,price,new HashMap<>())));
+           return Math.max((price[s]+cutting(s,target-(s+1),n,price,new HashMap<>())),cutting(s+1,target,n,price,new HashMap<>()));
+        }
+        
+        hm.put(key,cutting(s+1,target,n,price,new HashMap<>()));
+        
+        return hm.put(key,cutting(s+1,target,n,price,new HashMap<>()));
+    }
+}
+===========================================================================================================================
+Buy and sell stock
+class Solution {
+    public int maxProfit(int[] prices) {
+        return profit(prices,0,prices.length,false,new HashMap<>(),1);
+    }
+    public int profit(int[] prices,int s,int n,boolean buy, HashMap<String,Integer> hm,int count){
+        if(s==n || count<=0)
+            return 0;
+        
+        
+        
+        int a=0;
+        int b=profit(prices,s+1,prices.length,buy,hm,count);
+        if(!buy){
+            a= -prices[s]+ profit(prices,s+1,prices.length,true,hm,count);
+           // b= profit(prices,s+1,prices.length,false,hm,count);
+            return Math.max(a,b);
+        }
+        else{
+            a= prices[s]+ profit(prices,s+1,prices.length,true,hm,count-1);
+           // b= profit(prices,s+1,prices.length,true,hm,count);
+            return Math.max(a,b);
+        }
+    }
+}
+------------------------------------------------------------------------------------------
+class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0) return 0;
+        
+        int bestDeal = 0;
+        int buyAtIndex = 0;
+        
+        for (int i = 1; i < prices.length; i++) {
+			// buy the stock when the price keeps falling
+            if (prices[buyAtIndex] > prices[i]) {
+                buyAtIndex = i;
+            } else {
+				// sell the stock if it gives max profit
+                bestDeal = Math.max(prices[i] - prices[buyAtIndex], bestDeal);
+            }
+        }
+        
+        return bestDeal;
+    }
+   
+}
+=======================================================================================
+minimum steps to make 2 strings Anagrams
+ public int minSteps(String s, String t) {
+            
+        int[] freq1 = new int[26];
+            for(int i = 0;i<s.length();i++){
+                char ch = s.charAt(i);
+                
+                freq1[ch -'a']++;
+            }
+            
+             for(int i = 0;i<t.length();i++){
+                char ch = t.charAt(i);
+                
+                freq1[ch -'a']--;
+            }
+            int count = 0;
+            for(int i = 0;i<freq1.length;i++){
+                count += Math.abs(freq1[i]);
+            }
+            return count;
+        }
+==========================================================================================
+/** Design HashMap
+class MyHashMap {
+    int map[];
+    public MyHashMap() {
+        map=new int[10000000];
+        for(int i=0;i<map.length;i++){
+            map[i]=-1;
+        }
+    }
+    
+    public void put(int key, int value) {
+      map[key]=value;  
+    }
+    
+    public int get(int key) {
+        return map[key];
+    }
+    
+    public void remove(int key) {
+        map[key]=-1;
+    }
+}
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap obj = new MyHashMap();
+ * obj.put(key,value);
+ * int param_2 = obj.get(key);
+ * obj.remove(key);
+ */
+=======================================================================================================
+class MyHashMap {
+    
+    LinkedList<Entry>[] map;
+    public static int SIZE=769;
+    public MyHashMap() {
+      map=new LinkedList[769];
+    }
+    
+    public void put(int key, int value) {
+        Entry obj=new Entry(key,value);
+        int bucket=key%SIZE;
+        if(map[bucket]==null){
+            map[bucket]=new LinkedList<Entry>();
+            map[bucket].add(new Entry(key,value));
+        }else{
+            for(Entry entry:map[bucket]){
+                if(entry.key==key)
+                {
+                    entry.value=value;
+                    return;
+                }
+            }
+            map[bucket].add(new Entry(key,value));
+        }
+       
+    }
+    
+    public int get(int key) {
+        int bucket=key%SIZE;
+        LinkedList<Entry> entries=map[bucket];
+        if(entries==null)
+            return -1;
+        for(Entry entry:entries){
+            if(entry.key==key)
+                return entry.value;
+        }
+        return -1;
+        
+    }
+    
+    public void remove(int key) {
+       int bucket=key%SIZE;
+        Entry toRemove=null;
+       if(map[bucket]==null)
+           return;
+        for(Entry entries:map[bucket]){
+            if(entries.key==key)
+                toRemove=entries;
+        }
+        if(toRemove==null){
+            return;
+        }
+        map[bucket].remove(toRemove);
+    }
+}
+
+
+class Entry{
+    public int key;
+    public int value;
+    Entry(int key,int value){
+        this.key=key;
+        this.value=value;
+    }
+}
+
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap obj = new MyHashMap();
+ * obj.put(key,value);
+ * int param_2 = obj.get(key);
+ * obj.remove(key);
+ */
+==========================================================================
+
